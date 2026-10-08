@@ -9,10 +9,11 @@ Limpieza de textos cortos:
 Sin utilizar NLS
 """
 import os
+from pathlib import Path
 import re
 
 # Ruta de la carpeta que contiene los archivos .txt
-carpeta_textos = r"E:\MineriaDts\TRS\PYT\Textos_R1"
+carpeta_textos = os.getenv("TEXTOS_DIR", str(Path(__file__).resolve().parent / 'examples' / 'texts'))
 
 # Lista de stopwords básicas en español (puedes ampliarla)
 stopwords = {
@@ -73,4 +74,6 @@ def guardar_vocabulario(vocabulario, carpeta):
 
 # Ejecutar procesamiento y guardar resultado
 vocabulario = obtener_vocabulario(carpeta_textos)
-guardar_vocabulario(vocabulario, carpeta_textos)
+salida = os.getenv("OUTPUT_DIR", "resultados")
+os.makedirs(salida, exist_ok=True)
+guardar_vocabulario(vocabulario, salida)

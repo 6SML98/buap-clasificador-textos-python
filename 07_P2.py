@@ -8,15 +8,16 @@ Agregue una columna al final que contendrá la clase a la que pertence el docume
 
 """
 import os
+from pathlib import Path
 import re
 import numpy as np
 import pandas as pd
 
 # Ruta de la carpeta que contiene los archivos .txt
-carpeta_textos = r"E:\MineriaDts\TRS\PYT\Textos_R1"
+carpeta_textos = os.getenv("TEXTOS_DIR", str(Path(__file__).resolve().parent / 'examples' / 'texts'))
 
 # Ruta del archivo CSV con las clases
-archivo_clases = r"E:\MineriaDts\TRS\PYT\Textos_R1\textos_cortos.csv"
+archivo_clases = os.getenv("CLASES_CSV", str(Path(__file__).resolve().parent / "examples" / "textos_cortos.csv"))
 
 # Lista básica de stopwords (puedes ampliarla si deseas)
 stopwords = {
@@ -115,15 +116,17 @@ def guardar_bow(matriz, nombres_archivos, clases_documentos, vocabulario, modo, 
 # --------------------------
 
 # Obtener vocabulario de la carpeta
-vocabulario = obtener_vocabulario(carpeta_textos)
+vocabulario = sorted(obtener_vocabulario(carpeta_textos))
+salida = os.getenv("OUTPUT_DIR", "resultados")
+os.makedirs(salida, exist_ok=True)
 
 # Cargar las clases desde CSV
 clases = cargar_clases(archivo_clases)
 
 # BoW por frecuencia
 matriz_frecuencia, nombres_archivos, clases_documentos = generar_bow(carpeta_textos, vocabulario, clases, modo="frecuencia")
-guardar_bow(matriz_frecuencia, nombres_archivos, clases_documentos, vocabulario, "frecuencia", carpeta_textos)
+guardar_bow(matriz_frecuencia, nombres_archivos, clases_documentos, vocabulario, "frecuencia", salida)
 
 # BoW por presencia
 matriz_presencia, _, _ = generar_bow(carpeta_textos, vocabulario, clases, modo="presencia")
-guardar_bow(matriz_presencia, nombres_archivos, clases_documentos, vocabulario, "presencia", carpeta_textos)
+guardar_bow(matriz_presencia, nombres_archivos, clases_documentos, vocabulario, "presencia", salida)

@@ -9,9 +9,11 @@ Separe los documentos cortos en dos partes mutuamente excluyentes y colectivamen
 import csv
 import random
 import os
+random.seed(int(os.getenv("RANDOM_SEED", "42")))
+from pathlib import Path
 
 # Archivo de entrada (debe ser un archivo CSV generado previamente)
-ENTRADA = r"E:\MineriaDts\TRS\PYT\Textos_R1\BoW_presencia.csv"
+ENTRADA = os.getenv("BOW_CSV", str(Path(os.getenv("OUTPUT_DIR", "resultados")) / "BoW_presencia.csv"))
 
 # Verificar si el archivo existe
 if not os.path.isfile(ENTRADA):

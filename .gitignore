@@ -35,3 +35,5 @@ local.properties
 *.log
 .DS_Store
 Thumbs.db
+resultados/
+__pycache__/
